@@ -34,8 +34,8 @@ public class Task1Impl implements IStringRowsListSorter {
                 if (str1.equals(str2)) return 0;
                 if (str1.equals("")) return -1;
                 if (str2.equals("")) return 1;
-                List<String> list1 = spiltter(str1); // Разбивые строки на строковые и
-                List<String> list2 = spiltter(str2); // числовые состовляющие
+                List<String> list1 = splitter(str1); // Разбивые строки на строковые и
+                List<String> list2 = splitter(str2); // числовые состовляющие
                 for (int i = 0; i < Math.min(list1.size(), list2.size()); i++) {
                     if (list1.get(i).matches("\\d+") && list2.get(i).matches("\\d+")) { // Если состовлящие числовые
                         if (Integer.parseInt(list1.get(i)) != Integer.parseInt(list2.get(i))) {
@@ -59,7 +59,7 @@ public class Task1Impl implements IStringRowsListSorter {
             }
 
             // Метод для разбиения строки на числовые и строковые состовляющие
-            public List<String> spiltter(final String str) {
+            public List<String> splitter(final String str) {
                 List<String> result = new ArrayList<>();
                 Pattern pattern = Pattern.compile("\\d+|\\D+");
                 Matcher matcher = pattern.matcher(str);
