@@ -19,7 +19,9 @@ import java.util.regex.Pattern;
 public class Task1Impl implements IStringRowsListSorter {
 
     // ваша реализация должна работать, как singleton. даже при использовании из нескольких потоков.
-    public static volatile  IStringRowsListSorter INSTANCE = new Task1Impl();
+    public static class IStringRowsListSorter {
+        public static final Task1Impl INSTANCE = new Task1Impl();
+    }
 
     @Override
     public void sort(final List<String[]> rows, final int columnIndex) {
@@ -78,11 +80,18 @@ public class Task1Impl implements IStringRowsListSorter {
     }
 
     /**
+     * Ленивая инициализация без необходимости синхронизации. Основная хитрость этого способа состоит в том,
+     * что при вызове Task1Impl.getInstance()  класс IElementNumberAssigner  ещё не будет загружен и инициализирован,
+     * а значит экземпляр будет создаваться только при обращении к getInstance(). А хитрость отсутствия необходимости
+     * инициализации в том, что загрузка и инициализация класса в любом случае будет проходить ClassLoader-ом
+     * синхронизировано, другие потоки не смогут получить статическое поле из IElementNumberAssigner,
+     * пока он не будет инициализирован.
+     *
      * Возвращает instance объекта реализующего интерфейс IStringRowsListSorter
      * @return объект реализующий интерфейс IStringRowsListSorter
      */
-    public static IStringRowsListSorter getInstance(){
-        return INSTANCE;
+    public static Task1Impl getInstance(){
+        return IStringRowsListSorter.INSTANCE;
     }
 
 }

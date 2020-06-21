@@ -29,7 +29,10 @@ import java.util.List;
 public class Task2Impl implements IElementNumberAssigner{
 
     // ваша реализация должна работать, как singleton. даже при использовании из нескольких потоков.
-    public static volatile IElementNumberAssigner INSTANCE = new Task2Impl();
+
+    public static class IElementNumberAssigner {
+        public static final Task2Impl INSTANCE = new Task2Impl();
+    }
 
     @Override
     public void assignNumbers(final List<IElement> elements) {
@@ -86,11 +89,18 @@ public class Task2Impl implements IElementNumberAssigner{
     }
 
     /**
+     * Ленивая инициализация без необходимости синхронизации. Основная хитрость этого способа состоит в том,
+     * что при вызове Task1Impl.getInstance()  класс IElementNumberAssigner  ещё не будет загружен и инициализирован,
+     * а значит экземпляр будет создаваться только при обращении к getInstance(). А хитрость отсутствия необходимости
+     * инициализации в том, что загрузка и инициализация класса в любом случае будет проходить ClassLoader-ом
+     * синхронизировано, другие потоки не смогут получить статическое поле из IElementNumberAssigner,
+     * пока он не будет инициализирован.
+     *
      * Возвращает instance объекта реализующего интерфейс IElementNumberAssigner
      * @return объект реализующий интерфейс IElementNumberAssigner
      */
-    public static IElementNumberAssigner getInstance(){
-        return INSTANCE;
+    public static Task2Impl getInstance(){
+        return IElementNumberAssigner.INSTANCE;
     }
 
 }
