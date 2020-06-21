@@ -1,5 +1,8 @@
 package ru.tandemservice.test.task2;
 
+import ru.tandemservice.test.task1.IStringRowsListSorter;
+import ru.tandemservice.test.task1.Task1Impl;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -16,17 +19,17 @@ import java.util.List;
 
 /**
  * Оценка числа операций:
-* Минимальное количество операций, если в листе elements номера элементов идут по порядку: O(1)
-* Максимальное количество опереций, если в листе elements каждый номер элемента
-* не совпадает с номером элемента в той же позиции в отсортированном листе и они
-* идут парами, например [1, 0, 3, 2, 7, 6]: O(1,5 * n)
-* Среднее число операций: O(n)
+ * Минимальное количество операций, если в листе elements номера элементов идут по порядку: O(1)
+ * Максимальное количество опереций, если в листе elements каждый номер элемента
+ * не совпадает с номером элемента в той же позиции в отсортированном листе и они
+ * идут парами, например [1, 0, 3, 2, 7, 6]: O(1,5 * n)
+ * Среднее число операций: O(n)
  */
 
 public class Task2Impl implements IElementNumberAssigner{
 
     // ваша реализация должна работать, как singleton. даже при использовании из нескольких потоков.
-    public static final IElementNumberAssigner INSTANCE = new Task2Impl();
+    public static volatile IElementNumberAssigner INSTANCE = new Task2Impl();
 
     @Override
     public void assignNumbers(final List<IElement> elements) {
@@ -81,4 +84,13 @@ public class Task2Impl implements IElementNumberAssigner{
         }
         return -1;
     }
+
+    /**
+     * Возвращает instance объекта реализующего интерфейс IElementNumberAssigner
+     * @return объект реализующий интерфейс IElementNumberAssigner
+     */
+    public static IElementNumberAssigner getInstance(){
+        return INSTANCE;
+    }
+
 }

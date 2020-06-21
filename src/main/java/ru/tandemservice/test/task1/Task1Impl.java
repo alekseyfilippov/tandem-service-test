@@ -1,5 +1,8 @@
 package ru.tandemservice.test.task1;
 
+import ru.tandemservice.test.task2.IElementNumberAssigner;
+import ru.tandemservice.test.task2.Task2Impl;
+
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -16,7 +19,7 @@ import java.util.regex.Pattern;
 public class Task1Impl implements IStringRowsListSorter {
 
     // ваша реализация должна работать, как singleton. даже при использовании из нескольких потоков.
-    public static final IStringRowsListSorter INSTANCE = new Task1Impl();
+    public static volatile  IStringRowsListSorter INSTANCE = new Task1Impl();
 
     @Override
     public void sort(final List<String[]> rows, final int columnIndex) {
@@ -72,6 +75,14 @@ public class Task1Impl implements IStringRowsListSorter {
         };
 
         rows.sort(comparator);
+    }
+
+    /**
+     * Возвращает instance объекта реализующего интерфейс IStringRowsListSorter
+     * @return объект реализующий интерфейс IStringRowsListSorter
+     */
+    public static IStringRowsListSorter getInstance(){
+        return INSTANCE;
     }
 
 }
